@@ -27,6 +27,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <!-- Panel dolny - operacje CRUD i raport -->
+        <!-- CRUD operacje: Dodaj, Edytuj, Usuń -->
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button Name="btnAdd" Content="Dodaj" Width="80" Margin="0,0,10,0" Click="btnAdd_Click"/>
             <Button Name="btnEdit" Content="Edytuj" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>

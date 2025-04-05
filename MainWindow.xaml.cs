@@ -12,7 +12,8 @@ namespace CarbonWebAnalytics
         // Lista rekordów pobieranych z bazy (symulacja magazynu danych)
         private List<WebPageRecord> _records = new List<WebPageRecord>();
         // Przykładowy współczynnik emisji CO₂ w gramach na KB
-        private const double CO2_FACTOR = 0.02;
+        private const double CO2_FACTOR = 0.03; // 30 g CO₂ na 1 KB
+        // Przykładowa wartość emisji CO₂ dla 10 000 użytkowników
         // Łańcuch połączenia do bazy SQLite
         private string connectionString = "Data Source=WebPages.db;Version=3;";
 
@@ -111,6 +112,8 @@ namespace CarbonWebAnalytics
         }
 
         // Przycisk "Dodaj" – dodawanie nowego rekordu
+        // oraz aktualizacja danych w bazie
+        // (dodawanie rekordu do bazy danych)
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -143,6 +146,7 @@ namespace CarbonWebAnalytics
         }
 
         // Przycisk "Edytuj" – edycja zaznaczonego rekordu
+        // oraz aktualizacja danych w bazie
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -194,6 +198,7 @@ namespace CarbonWebAnalytics
         }
 
         // Przycisk "Usuń" – usuwanie zaznaczonego rekordu
+        // oraz resetowanie sekwencji Id w bazie danych
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -212,6 +217,31 @@ namespace CarbonWebAnalytics
                     {
                         cmd.Parameters.AddWithValue("@Id", record.Id);
                         cmd.ExecuteNonQuery();
+                    }
+                    
+                    // Reset SQLite
+                    // sekwencji Id po usunięciu rekordu
+                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
+                    {
+                        // Sprawdzanie czy jakieś rekordy są w tabeli
+                        // (czyli czy nie jest pusta)
+                        cmd.CommandText = "SELECT COUNT(*) FROM WebPages";
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        
+                        if (count == 0)
+                        {
+                            // Jeżeli table jest pusta, usuwamy sekwencję
+                            // (czyli resetujemy licznik Id)
+                            cmd.CommandText = "DELETE FROM sqlite_sequence WHERE name='WebPages'";
+                            cmd.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            // Jeżeli table nie jest pusta, resetujemy licznik do ostatniego Id
+                            // (czyli do Id największego rekordu)
+                            cmd.CommandText = "UPDATE sqlite_sequence SET seq = (SELECT MAX(Id) FROM WebPages) WHERE name = 'WebPages'";
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                 }
                 LoadRecords();
