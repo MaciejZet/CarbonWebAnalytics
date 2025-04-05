@@ -17,7 +17,8 @@
             <Button Name="btnAnalyze" Content="Analizuj" Width="80" Click="btnAnalyze_Click"/>
         </StackPanel>
         <!-- Panel środkowy - DataGrid z rekordami -->
-        <DataGrid Name="dgRecords" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,0,0,10">
+        <DataGrid Name="dgRecords" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" 
+                 Margin="0,0,0,10" SelectionChanged="dgRecords_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
                 <DataGridTextColumn Header="URL" Binding="{Binding Url}" Width="*"/>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace CarbonWebAnalytics
 {
@@ -151,15 +152,23 @@ namespace CarbonWebAnalytics
                     MessageBox.Show("Wybierz rekord do edycji.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+                
                 WebPageRecord record = dgRecords.SelectedItem as WebPageRecord;
-                record.Url = txtUrl.Text.Trim();
+                string url = txtUrl.Text.Trim();
+                
+                if (string.IsNullOrEmpty(url))
+                {
+                    MessageBox.Show("URL nie może być pusty.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                
                 if (!double.TryParse(txtPageSize.Text, out double pageSize))
                 {
                     MessageBox.Show("Wprowadź poprawny rozmiar w KB.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-                record.PageSizeKb = pageSize;
-                record.GeneratedCO2 = pageSize * CO2_FACTOR * 10000;
+                
+                double generatedCO2 = pageSize * CO2_FACTOR * 10000;
                 
                 using (SQLiteConnection conn = new SQLiteConnection(connectionString))
                 {
@@ -167,13 +176,15 @@ namespace CarbonWebAnalytics
                     string updateQuery = "UPDATE WebPages SET Url=@Url, PageSizeKb=@PageSizeKb, GeneratedCO2=@GeneratedCO2 WHERE Id=@Id";
                     using (SQLiteCommand cmd = new SQLiteCommand(updateQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("@Url", record.Url);
-                        cmd.Parameters.AddWithValue("@PageSizeKb", record.PageSizeKb);
-                        cmd.Parameters.AddWithValue("@GeneratedCO2", record.GeneratedCO2);
+                        cmd.Parameters.AddWithValue("@Url", url);
+                        cmd.Parameters.AddWithValue("@PageSizeKb", pageSize);
+                        cmd.Parameters.AddWithValue("@GeneratedCO2", generatedCO2);
                         cmd.Parameters.AddWithValue("@Id", record.Id);
                         cmd.ExecuteNonQuery();
                     }
                 }
+                
+                MessageBox.Show("Rekord został zaktualizowany.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
                 LoadRecords();
             }
             catch (Exception ex)
@@ -245,6 +256,16 @@ namespace CarbonWebAnalytics
             catch (Exception ex)
             {
                 MessageBox.Show("Błąd podczas generowania raportu: " + ex.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Obsługa zmiany zaznaczenia w DataGrid
+        private void dgRecords_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgRecords.SelectedItem is WebPageRecord selectedRecord)
+            {
+                txtUrl.Text = selectedRecord.Url;
+                txtPageSize.Text = selectedRecord.PageSizeKb.ToString();
             }
         }
     }
