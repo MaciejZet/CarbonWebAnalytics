@@ -1,0 +1,37 @@
+﻿<Window x:Class="CarbonWebAnalytics.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Analizator stron internetowych" Height="500" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- Panel górny - wprowadzanie URL i rozmiaru -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+            <Label Content="URL:" Width="50"/>
+            <TextBox Name="txtUrl" Width="200" Margin="0,0,10,0"/>
+            <Label Content="Rozmiar (KB):" Width="100"/>
+            <TextBox Name="txtPageSize" Width="100" Margin="0,0,10,0"/>
+            <Button Name="btnAnalyze" Content="Analizuj" Width="80" Click="btnAnalyze_Click"/>
+        </StackPanel>
+        <!-- Panel środkowy - DataGrid z rekordami -->
+        <DataGrid Name="dgRecords" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,0,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="URL" Binding="{Binding Url}" Width="*"/>
+                <DataGridTextColumn Header="Rozmiar (KB)" Binding="{Binding PageSizeKb}" Width="100"/>
+                <DataGridTextColumn Header="CO₂ (g)" Binding="{Binding GeneratedCO2}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!-- Panel dolny - operacje CRUD i raport -->
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <Button Name="btnAdd" Content="Dodaj" Width="80" Margin="0,0,10,0" Click="btnAdd_Click"/>
+            <Button Name="btnEdit" Content="Edytuj" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
+            <Button Name="btnDelete" Content="Usuń" Width="80" Margin="0,0,10,0" Click="btnDelete_Click"/>
+            <Button Name="btnSearch" Content="Szukaj" Width="80" Margin="0,0,10,0" Click="btnSearch_Click"/>
+            <Button Name="btnReport" Content="Raport" Width="80" Click="btnReport_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,9 @@
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\MainWindow.g.cs
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\App.g.cs
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\CarbonWebAnalytics_MarkupCompile.cache
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\CarbonWebAnalytics_MarkupCompile.lref
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\MainWindow.baml
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\CarbonWebAnalytics.dll
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\refint\CarbonWebAnalytics.dll
+C:\Users\macie\source\repos\ConsoleApp1\CarbonWebAnalytics\obj\Release\net8.0-windows\CarbonWebAnalytics.pdb
